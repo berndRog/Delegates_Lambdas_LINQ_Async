@@ -109,18 +109,21 @@ class Test {
       };
 
 
-   var personPets = people
-      .SelectMany(
-         person => pets.Where(pet => pet.PersonId == person.Id),
-            (person, pet) => new {
-               PersonName = person.Name, 
-               PetName = pet.Name
-            }
-      );
+      var personPets = people
+         .SelectMany(
+            person => pets.Where(pet => pet.PersonId == person.Id),
+               (person, pet) => new {
+                  PersonName = person.Name, 
+                  PetName = pet.Name
+               }
+         );
    
       personPets.ToList().ForEach(e => Console.WriteLine($"{e.PersonName} {e.PetName}"));
-   
+      
+      //
       // Sorting OrderBy(Ascebding) and OrderByDescending")
+      //
+      Console.WriteLine("\nOrderBy");
       var sortedNumbers = numbers
          .OrderBy(n => n);
       var sortedNumbersDesc = numbers
@@ -131,22 +134,42 @@ class Test {
       sortedNumbersDesc.ToList().ForEach(e => Console.Write($"{e} ")); 
       Console.WriteLine();
       
+      Console.WriteLine("\nOrderBy second letter");
       words
-         .OrderBy(w => w[1])
+         .OrderBy(w => w[1])  // sort by second letter
          .ToList()
          .ForEach(w => Console.Write($"{w} "));
       Console.WriteLine();
       
+      //
+      // Grouping
+      //
+      // group word by second letter
+      Console.WriteLine("\nGroupBy second letter and order by key");
+      List<IGrouping<char, string>> grouped = 
+         words
+            .GroupBy(w => w[1])
+            .OrderBy(w => w.Key)
+            .ToList();
       
-      // FirstOrDefault / SingleOrDefault
-      var first = 
-         words.FirstOrDefault(w => w.Contains("beere"));
+      grouped
+         .ForEach(w => {
+            Console.Write($"{w.Key}: ");
+            w.ToList().ForEach(e => Console.Write($"{e} "));
+            Console.WriteLine();
+         });
       
+      
+      //
+      // Elementoperations, FirstOrDefault / SingleOrDefault
+      //
+      Console.WriteLine("\nFirstOrDefault");
+      var first = words.FirstOrDefault(w => w.Contains("beere"));
       first?.ToList().ForEach(e => Console.Write($"{e}"));
       Console.WriteLine();
 
       try {
-         var single = words.SingleOrDefault(w => w.Contains("bär"));
+         var single = words.SingleOrDefault(w => w.Contains("bäere"));
          single?
             .ToList()
             .ForEach(e => Console.Write($"{e}"));
@@ -155,13 +178,19 @@ class Test {
          Console.WriteLine(e.Message);
       }
       
-      // Any / All
+      //
+      // Predicates: Any / All
+      //
+      Console.WriteLine("\nAny, All");
       bool hasEvenNumbers = numbers.Any(n => n % 2 == 0);
       bool allEvenNumbers = numbers.All(n => n % 2 == 0);
       Console.WriteLine($"sequence has even numbers: {hasEvenNumbers}");
       Console.WriteLine($"all numbers in sequence are even: {allEvenNumbers}");
 
-      // Count / Sum / Average / Min / Max
+      //
+      // Aggregates: Count / Sum / Average / Min / Max
+      //
+      Console.WriteLine("\nAggregates: Count / Sum / Average / Min / Max");
       int count = numbers.Count();
       int sum = numbers.Sum();
       double average = numbers.Average();
@@ -175,7 +204,6 @@ class Test {
       Console.WriteLine($"max: {max}");
       
    }
-   
    
    void Run2() {
 
