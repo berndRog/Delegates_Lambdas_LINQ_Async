@@ -3,7 +3,8 @@ namespace Core;
 
 public class CHigh {
    
-   private readonly CLow _low;
+ private readonly CLow _low;
+  // private readonly ILow _low;
    
    public CHigh() {
       Console.WriteLine("CHigh.Ctor()");

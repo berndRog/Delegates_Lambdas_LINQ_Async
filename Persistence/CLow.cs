@@ -1,6 +1,6 @@
 ﻿namespace Persistence;
 
-public class CLow {
+public class CLow : ILow {
    
    public CLow() {
       Console.WriteLine("CLow.Ctor()");
